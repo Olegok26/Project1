@@ -17,7 +17,7 @@ while i <= k2:
             monp = months[i]
             string = string.replace('' + mon1 + ' ', '')
             print('Дата ', " ".join(dat))
-            print('Месяц ', )
+            print('Месяц ', monp)
             break
         else:
             i = i + 1
