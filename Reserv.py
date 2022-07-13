@@ -11,3 +11,5 @@ while i <= k1:
     else:
         print("Error")
         break
+
+(?u)\w\sсред.{1,2}\s
