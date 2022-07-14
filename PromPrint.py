@@ -2,9 +2,9 @@ import re
 import datetime
 
 string = input('Введите что нужно сделать и дату: ')
-months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
-          'декабря', 'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября',
-          'Ноября', 'Декабря']
+months = ['января', 'февраля',  'марта', 'апреля', 'мая', 'июня','июля', 'августа', 'сентября', 'октября', 'ноября',
+        'декабря', 'Января', 'Февраля','Марта', 'Апреля', 'Мая', 'Июня','Июля', 'Августа', 'Сентября', 'Октября',
+         'Ноября', 'Декабря']
 days = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье', 'будни', 'выходные',
         'понедельник', 'вторник', 'среду', 'пятницу', 'субботу', 'воскресенье', 'понедельникам', 'вторникам', 'средам',
         'четвергам', 'пятницам', 'субботам', 'воскресеньям', 'будням', 'выходным']
@@ -56,6 +56,8 @@ while i <= k1:
             dp = " ".join(d1)
             mop = i
             string = string.replace('' + mon1 + ' ', '')
+            print('Дата ', dp)
+            print('Месяц ', mop)
             errors = errors + 1
             ms = ms + 1
             break
@@ -77,6 +79,7 @@ while i < k2:
                 dwp = " ".join(dw2)
                 string = string.replace(W1 + days[i], '')
                 ds = ds + 1
+                print('День недели ', days[i])
                 break
             else:
                 while l < k3:
@@ -88,6 +91,7 @@ while i < k2:
                             rept = l
                             string = string.replace(repeat[l] + ' ' + days[i], '')
                             ds = ds + 1
+                            print('Повторение', rep1)
                             errors = errors + 1
                             break
                     else:
@@ -103,6 +107,7 @@ while i < k2:
                         rept = l
                         string = string.replace(repeat[l] + ' ' + days[i], '')
                         ds = ds + 1
+                        print('Повторение', rep1)
                         errors = ds + 1
                         break
                     break
@@ -125,6 +130,7 @@ while i < k4:
         else:
             povt = 4
         string = string.replace(repeat1[i], '')
+        print('Повторение ', povt)
         z = z + 1
         break
     else:
@@ -142,6 +148,8 @@ if stepm in string:
             sts = sts + 1
             t = i
             string = string.replace(st1, '')
+            print('СТС ', sts)
+            print('На сколько увеличить ', delta)
             break
         else:
             i = i + 1
@@ -161,6 +169,7 @@ if year in string:
     y2 = " ".join(y1)
     yx = re.findall(r'\d{2,4}', y2)
     yp = " ".join(yx)
+    print('Год ', yp)
     string = string.replace('' + " ".join(y1) + ' ', '')
 
 if ':' in string:
@@ -170,40 +179,49 @@ if ':' in string:
         if W1 in tw1:
             time = re.findall(r'\d{2}.\d{2}', string)
             tt = " ".join(time)
+            print('Время', tt)
             hour = re.findall(r'\d{2}.', tt)
             hour1 = " ".join(hour)
             hx = re.findall(r'\d{2}', hour1)
             hp = " ".join(hx)
+            print('Часы', hp)
             minute = re.findall(r'.\d{2}', tt)
             minute1 = " ".join(minute)
             mx = re.findall(r'\d{2}', minute1)
             mp = " ".join(mx)
+            print('Минуты', mp)
             string = string.replace(W1 + tt, '')
             x = x + 1
         else:
             time = re.findall(r'\d{2}.\d{2}', string)
             tt = " ".join(time)
+            print('Время', tt)
             hour = re.findall(r'\d{2}.', tt)
             hour1 = " ".join(hour)
             hx = re.findall(r'\d{2}', hour1)
             hp = " ".join(hx)
+            print('Часы', hp)
             minute = re.findall(r'.\d{2}', tt)
             minute1 = " ".join(minute)
             mx = re.findall(r'\d{2}', minute1)
             mp = " ".join(mx)
+            print('Минуты', mp)
             string = string.replace(tt, '')
             x = x + 1
     else:
         time = re.findall(r'\d{2}.\d{2}', string)
         tt = " ".join(time)
+        print('Время', tt)
         hour = re.findall(r'\d{2}.', tt)
         hour1 = " ".join(hour)
         hx = re.findall(r'\d{2}', hour1)
         hp = " ".join(hx)
+        print('Часы', hp)
         minute = re.findall(r'.\d{2}', tt)
         minute1 = " ".join(minute)
         mx = re.findall(r'\d{2}', minute1)
         mp = " ".join(mx)
+        print('Минуты', mp)
         string = string.replace(tt, '')
         x = x + 1
 elif '.' in string:
@@ -213,40 +231,49 @@ elif '.' in string:
         if W1 in tw1:
             time = re.findall(r'\d{2}.\d{2}', string)
             tt = " ".join(time)
+            print('Время', tt)
             hour = re.findall(r'\d{2}.', tt)
             hour1 = " ".join(hour)
             hx = re.findall(r'\d{2}', hour1)
             hp = " ".join(hx)
+            print('Часы', hp)
             minute = re.findall(r'.\d{2}', tt)
             minute1 = " ".join(minute)
             mx = re.findall(r'\d{2}', minute1)
             mp = " ".join(mx)
+            print('Минуты', mp)
             string = string.replace(W1 + tt, '')
             x = x + 1
         else:
             time = re.findall(r'\d{2}.\d{2}', string)
             tt = " ".join(time)
+            print('Время', tt)
             hour = re.findall(r'\d{2}.', tt)
             hour1 = " ".join(hour)
             hx = re.findall(r'\d{2}', hour1)
             hp = " ".join(hx)
+            print('Часы', hp)
             minute = re.findall(r'.\d{2}', tt)
             minute1 = " ".join(minute)
             mx = re.findall(r'\d{2}', minute1)
             mp = " ".join(mx)
+            print('Минуты', mp)
             string = string.replace(tt, '')
             x = x + 1
     else:
         time = re.findall(r'\d{2}.\d{2}', string)
         tt = " ".join(time)
+        print('Время', tt)
         hour = re.findall(r'\d{2}.', tt)
         hour1 = " ".join(hour)
         hx = re.findall(r'\d{2}', hour1)
         hp = " ".join(hx)
+        print('Часы', hp)
         minute = re.findall(r'.\d{2}', tt)
         minute1 = " ".join(minute)
         mx = re.findall(r'\d{2}', minute1)
         mp = " ".join(mx)
+        print('Минуты', mp)
         string = string.replace(tt, '')
         x = x + 1
 
@@ -298,6 +325,8 @@ if nxts > 0:
         yp = time.year + 1
 
 povt = (povt * 2) - 1
+print('Повторение массив', povt)
+print(repeat1[povt])
 
 if x == 0:
     hp = time.hour
@@ -324,13 +353,11 @@ if sts != 0:
           f'Дата: число: {dp}, месяц: {mop}, год:{yp} ')
 elif z != 0:
     if povt == 1:
-        print(
-            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, Время: часы: {hp}, минуты: {mp}')
+        print(f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, Время: часы: {hp}, минуты: {mp}')
     elif povt == 3:
-        print(
-            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
-            f'часы: {hp}, минуты: {mp}')
-    elif povt == 5:
+        print(f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
+          f'часы: {hp}, минуты: {mp}')
+    elif povt  == 5:
         print(
             f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
             f'часы: {hp}, минуты: {mp}, Дата: число: {dp}')
