@@ -2,20 +2,18 @@ import re
 import datetime
 
 string = input('Введите что нужно сделать и дату: ')
+string = string.lower()
 months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
-          'декабря', 'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября',
-          'Ноября', 'Декабря']
-days = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье', 'будни', 'выходные',
-        'понедельник', 'вторник', 'среду', 'пятницу', 'субботу', 'воскресенье', 'понедельникам', 'вторникам', 'средам',
-        'четвергам', 'пятницам', 'субботам', 'воскресеньям', 'будням', 'выходным']
-dayp = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье', 'будни', 'выходные']
+          'декабря']
+days = ['понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу', 'воскресенье', 'понедельникам', 'вторникам',
+        'средам', 'четвергам', 'пятницам', 'субботам', 'воскресеньям', 'будням', 'выходным', 'будни', 'выходные']
+dayp = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье', 'по будням', 'по выходным']
 year = 'года'
 W1 = 'в '
-repeat = ['каждый', 'каждую', 'по', 'Каждый', 'Каждую', 'По']
-repeat1 = ['ежедневно', 'Ежедневно', 'Еженедельно', 'еженедельно', 'Ежемесячно',
-           'ежемесячно', 'Ежегодно', 'ежегодно']
+repeat = ['каждый', 'каждую', 'по']
+repeat1 = ['ежедневно', 'еженедельно', 'ежемесячно', 'ежегодно']
 stepm = 'через'
-step = ['минут', 'часов', 'дней', 'недель', 'месяцев', 'год', 'лет']
+step = ['минут', 'час', 'дн', 'недель', 'месяц', 'год', 'лет']
 nxt = ['завтра', 'послезавтра', 'на следующей неделе', 'в следующем месяце', 'в следующем году']
 
 nxts = 0
@@ -44,6 +42,7 @@ k6 = len(nxt)
 mp = 0
 hp = 0
 dp = 0
+wdp = 0
 mop = 0
 yp = 0
 
@@ -85,10 +84,12 @@ while i < k2:
                         rep1 = " ".join(rep)
                         if repeat[l] in rep1:
                             dwo = i
-                            rept = l
+                            povt = 1
+                            repp = repeat[l] + ' ' + days[i]
                             string = string.replace(repeat[l] + ' ' + days[i], '')
                             ds = ds + 1
-                            errors = errors + 1
+                            errors = ds + 1
+                            z = z + 1
                             break
                     else:
                         l = l + 1
@@ -96,14 +97,16 @@ while i < k2:
         else:
             while l < k3:
                 if repeat[l] in string:
-                    rep = re.findall(repeat[l] + ' ' + days[i], string)
+                    rep = re.findall(repeat[l] + '\s' + days[i], string)
                     rep1 = " ".join(rep)
                     if repeat[l] in rep1:
                         dwo = i
-                        rept = l
+                        povt = 1
+                        repp = repeat[l] + ' ' + days[i]
                         string = string.replace(repeat[l] + ' ' + days[i], '')
                         ds = ds + 1
                         errors = ds + 1
+                        z = z + 1
                         break
                     break
                 else:
@@ -116,14 +119,7 @@ i = 0
 
 while i < k4:
     if repeat1[i] in string:
-        if i <= 1:
-            povt = 1
-        elif i <= 3:
-            povt = 2
-        elif i <= 5:
-            povt = 3
-        else:
-            povt = 4
+        povt = i
         string = string.replace(repeat1[i], '')
         z = z + 1
         break
@@ -134,15 +130,22 @@ i = 0
 
 if stepm in string:
     while i < k5:
-        st = re.findall(stepm + r'\s\d{1,2}\s' + step[i], string)
+        st = re.findall(stepm + r'\s{0,1}\d{0,2}\s' + step[i] + '.{0,2}', string)
         st1 = " ".join(st)
         if step[i] in st1:
-            st2 = re.findall(r'\s\d{1,2}\s', st1)
-            delta = " ".join(st2)
-            sts = sts + 1
-            t = i
-            string = string.replace(st1, '')
-            break
+            if re.search(r'\s\d{1,2}\s', st1):
+                st2 = re.findall(r'\s\d{1,2}\s', st1)
+                delta = " ".join(st2)
+                sts = sts + 1
+                t = i
+                string = string.replace(st1, '')
+                break
+            else:
+                delta = 1
+                sts = sts + 1
+                t = i
+                string = string.replace(st1, '')
+                break
         else:
             i = i + 1
 
@@ -251,7 +254,13 @@ elif '.' in string:
         x = x + 1
 
 delta = int(delta)
-dwo = (dwo + 1) % 7
+
+if dwo < 14:
+    dwo = dwo % 7
+elif dwo == 14 or dwo == 16:
+    dwo = 7
+elif dwo == 15 or dwo == 17:
+    dwo = 8
 
 if ms == 1:
     mop = (mop + 1) % 12
@@ -259,15 +268,19 @@ if ms == 1:
 if sts > 0:
     if t == 0:
         if time.minute + delta > 60:
-            mp = time.minute + delta % 60
+            mp = (time.minute + delta % 60) % 60
             hp = time.hour + (time.minute + delta) // 60
             x = x + 6
         else:
-            mp = time.minute + (delta % 60)
+            mp = (time.minute + (delta % 60)) % 60
             x = x + 4
     elif t == 1:
         x = x + 5
-        hp = (time.hour + delta) % 24
+        if time.hour + delta > 24:
+            dp = (time.day + 1) % 31
+            hp = (time.hour + delta) % 24
+        else:
+            hp = (time.hour + delta) % 24
     elif t == 2:
         dp = time.day + delta
         wdp = time.weekday() + delta % 7
@@ -285,7 +298,7 @@ if sts > 0:
     elif t == 6:
         yp = time.year + delta
 
-if nxts > 0:
+if nxts != 0:
     if nxtm == 0:
         dp = time.day + 1
         wdp = (time.weekday() + 1) % 7
@@ -293,11 +306,9 @@ if nxts > 0:
         dp = time.day + 2
         wdp = (time.weekday() + 2) % 7
     elif nxtm == 3:
-        mp = (time.month + 1) % 12
+        mop = (time.month + 1) % 12
     elif nxtm == 4:
         yp = time.year + 1
-
-povt = (povt * 2) - 1
 
 if x == 0:
     hp = time.hour
@@ -310,7 +321,11 @@ elif x == 1:
     x = 0
 else:
     mp = time.minute
-if ds == 0 & z != 0:
+
+if nxts == 1 and nxtm > 1:
+    dwo = time.weekday()
+
+if ds == 0 and z != 0:
     dwo = time.weekday()
 if dp == 0:
     dp = time.day
@@ -320,28 +335,33 @@ if yp == 0:
     yp = time.year
 
 if sts != 0:
-    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {days[dwo]}, Время: часы: {hp}, минуты: {mp}, '
+    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {dayp[dwo]}, Время: часы: {hp}, минуты: {mp}, '
           f'Дата: число: {dp}, месяц: {mop}, год:{yp} ')
 elif z != 0:
-    if povt == 1:
+    if povt == 0:
         print(
             f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, Время: часы: {hp}, минуты: {mp}')
+    elif povt == 1 and dwo < 7:
+        print(
+            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {dayp[dwo]}, Время: '
+            f'часы: {hp}, минуты: {mp}')
+    elif povt == 1 and dwo >= 7:
+        print(
+            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, {dayp[dwo]}, Время: '
+            f'часы: {hp}, минуты: {mp}')
+    elif povt == 2:
+        print(
+            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {dayp[dwo]}, Время: '
+            f'часы: {hp}, минуты: {mp}, Дата: число: {dp}')
     elif povt == 3:
         print(
-            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
-            f'часы: {hp}, минуты: {mp}')
-    elif povt == 5:
-        print(
-            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
-            f'часы: {hp}, минуты: {mp}, Дата: число: {dp}')
-    elif povt == 7:
-        print(
-            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {days[dwo]}, Время: '
+            f'Статус:Успешно, Текст: {string}, Параметры: Повторение: {repeat1[povt]}, День недели: {dayp[dwo]}, Время: '
             f'часы: {hp}, минуты: {mp}, Дата: число: {dp}, месяц: {mop}')
 elif nxts != 0:
-    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {days[wdp]}, Даты: часы: {hp}, минуты: {mp}')
+    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {dayp[dwo]}, Даты: часы: {hp}, минуты: {mp} '
+          f'Дата: число: {dp}, месяц: {mop}, год: {yp}')
 elif errors >= 1 and ds == 1:
-    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {days[dwo]}, Время: часы: {hp}, минуты: {mp}')
+    print(f'Статус:Успешно, Текст: {string}, Параметры: День недели: {dayp[dwo]}, Время: часы: {hp}, минуты: {mp}')
 elif errors >= 1:
     print(f'Статус:Успешно, Текст: {string}, Время: часы: {hp}, минуты: {mp}, '
           f'Дата: число: {dp}, месяц: {mop}, год: {yp}')
