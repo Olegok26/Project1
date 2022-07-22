@@ -3,10 +3,8 @@ import datetime
 
 string = input('Введите что нужно сделать и дату: ')
 string = string.lower()
-months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
-          'декабря']
-days = ['понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу', 'воскресенье', 'понедельникам', 'вторникам',
-        'средам', 'четвергам', 'пятницам', 'субботам', 'воскресеньям', 'будням', 'выходным', 'будни', 'выходные']
+months = ['январ', 'феврал', 'март', 'апрел', 'ма', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр']
+days = ['понедельник', 'вторник', 'сред', 'четверг', 'пятниц', 'суббот', 'воскресень','будн', 'выходны']
 dayp = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье', 'по будням', 'по выходным']
 year = 'года'
 W1 = 'в '
@@ -49,7 +47,7 @@ yp = 0
 while i <= k1:
     if i != k1:
         if months[i] in string:
-            mon = re.findall(r'(?<=\s)\d{1,2}\s' + months[i], string)
+            mon = re.findall(r'(?<=\s)\d{1,2}\s' + months[i] + '.{0,2}', string)
             mon1 = " ".join(mon)
             d1 = re.findall(r'\d{1,2}', mon1)
             dp = " ".join(d1)
@@ -68,25 +66,25 @@ i = 0
 while i < k2:
     if days[i] in string:
         if W1 in string:
-            dw = re.findall(r'.\s' + days[i], string)
+            dw = re.findall(r'.\s' + days[i] + '.{0,2}', string)
             dw1 = " ".join(dw)
             if W1 in dw1:
                 dwo = i
                 dw2 = re.findall(days[i], dw1)
                 dwp = " ".join(dw2)
-                string = string.replace(W1 + days[i], '')
+                string = string.replace(dw1, '')
                 ds = ds + 1
                 break
             else:
                 while l < k3:
                     if repeat[l] in string:
-                        rep = re.findall(repeat[l] + '\s' + days[i], string)
+                        rep = re.findall(repeat[l] + '\s' + days[i]+ '.{0,2}', string)
                         rep1 = " ".join(rep)
                         if repeat[l] in rep1:
                             dwo = i
                             povt = 1
                             repp = repeat[l] + ' ' + days[i]
-                            string = string.replace(repeat[l] + ' ' + days[i], '')
+                            string = string.replace(rep1, '')
                             ds = ds + 1
                             errors = ds + 1
                             z = z + 1
@@ -97,13 +95,13 @@ while i < k2:
         else:
             while l < k3:
                 if repeat[l] in string:
-                    rep = re.findall(repeat[l] + '\s' + days[i], string)
+                    rep = re.findall(repeat[l] + '\s' + days[i]+ '.{0,2}', string)
                     rep1 = " ".join(rep)
                     if repeat[l] in rep1:
                         dwo = i
                         povt = 1
                         repp = repeat[l] + ' ' + days[i]
-                        string = string.replace(repeat[l] + ' ' + days[i], '')
+                        string = string.replace(rep1, '')
                         ds = ds + 1
                         errors = ds + 1
                         z = z + 1
