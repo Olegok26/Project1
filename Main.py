@@ -47,12 +47,12 @@ yp = 0
 while i <= k1:
     if i != k1:
         if months[i] in string:
-            mon = re.findall(r'(?<=\s)\d{1,2}\s' + months[i] + '.{0,2}', string)
+            mon = re.findall(r'(?<=\s)\d{1,2}\s' + months[i] + '.{0,1}', string)
             mon1 = " ".join(mon)
             d1 = re.findall(r'\d{1,2}', mon1)
             dp = " ".join(d1)
             mop = i
-            string = string.replace('' + mon1 + ' ', '')
+            string = string.replace(mon1, '')
             errors = errors + 1
             ms = ms + 1
             break
@@ -162,7 +162,7 @@ if year in string:
     y2 = " ".join(y1)
     yx = re.findall(r'\d{2,4}', y2)
     yp = " ".join(yx)
-    string = string.replace('' + " ".join(y1) + ' ', '')
+    string = string.replace(" ".join(y1), '')
 
 if ':' in string:
     if W1 in string:
@@ -253,15 +253,8 @@ elif '.' in string:
 
 delta = int(delta)
 
-if dwo < 14:
-    dwo = dwo % 7
-elif dwo == 14 or dwo == 16:
-    dwo = 7
-elif dwo == 15 or dwo == 17:
-    dwo = 8
-
 if ms == 1:
-    mop = (mop + 1) % 12
+    mop = (mop + 1) % 13
 
 if sts > 0:
     if t == 0:
@@ -274,14 +267,16 @@ if sts > 0:
             x = x + 4
     elif t == 1:
         x = x + 5
-        if time.hour + delta > 24:
+        if time.hour * 60 + delta * 60 + time.minute > 1440:
             dp = (time.day + 1) % 31
             hp = (time.hour + delta) % 24
+            dwo = (time.weekday() + 1) % 7
+            sts = sts + 1
         else:
             hp = (time.hour + delta) % 24
     elif t == 2:
         dp = time.day + delta
-        wdp = time.weekday() + delta % 7
+        dwo = time.weekday() + delta % 7
     elif t == 3:
         if time.month % 2 == 1:
             dp = (time.day + 7) % 31
@@ -293,16 +288,18 @@ if sts > 0:
         mop = (time.month + delta) % 12
     elif t == 5:
         yp = time.year + delta
+        dwo = (time.weekday() + delta) % 7
+        sts = sts + 1
     elif t == 6:
         yp = time.year + delta
 
 if nxts != 0:
     if nxtm == 0:
         dp = time.day + 1
-        wdp = (time.weekday() + 1) % 7
+        dwo = (time.weekday() + 1) % 7
     elif nxtm == 1:
         dp = time.day + 2
-        wdp = (time.weekday() + 2) % 7
+        dwo = (time.weekday() + 2) % 7
     elif nxtm == 3:
         mop = (time.month + 1) % 12
     elif nxtm == 4:
@@ -325,9 +322,11 @@ if nxts == 1 and nxtm > 1:
 
 if ds == 0 and z != 0:
     dwo = time.weekday()
+elif sts != 0 and sts != 2:
+    dwo = time.weekday()
 if dp == 0:
     dp = time.day
-if mop == 0:
+if mop == 0 and ms == 0:
     mop = time.month
 if yp == 0:
     yp = time.year
